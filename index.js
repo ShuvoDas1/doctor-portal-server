@@ -40,8 +40,16 @@ client.connect(err => {
 
   app.post('/addADoctor',(req,res)=>{
       const file = req.files.file;
-      const name = req.files.name;
-      const email = req.files.email;
+      const name = req.body.name;
+      const email = req.body.email;
+      file.mv(`${__dirname}/doctors/${file.name}`,err =>{
+        if(err){
+          console.log(err)
+          return  res.status(500).send({message:'Failed to uplaod image'});
+        }
+        return res.send({name:file.name,path:`/${file.name}`})
+      })
+      
       console.log(name,email,file);
   })
 
